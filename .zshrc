@@ -10,7 +10,7 @@ fi
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-
+export PATH="$HOME/.local/bin:$PATH"
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -107,7 +107,7 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
+alias zcf="nvim ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias l='exa -a --icons --group-directories-first'
 alias la='exa -a --icons --group-directories-first'
@@ -123,16 +123,9 @@ alias lst1='exa --tree --level=1 --icons --group-directories-first'
 source ~/.fzf/shell/key-bindings.zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# cheat.sh command
-cheat() {
-    if [ -z "$1" ]; then
-        echo "Usage: cheat <command>"
-        return 1
-    fi
+export EDITOR='code'
 
-    local tempfile=$(mktemp)
-    # Fetch the content and remove ANSI escape codes using sed
-    curl -sL cheat.sh/$1 | sed 's/\x1b\[[0-9;]*m//g' > "$tempfile"
-    nvim "$tempfile"
-    rm "$tempfile"
-}
+source ~/.config/yazi/yazi-widget.zsh
+
+export PATH="/home/linuxbrew/.linuxbrew/Homebrew/bin:$PATH"
+export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
