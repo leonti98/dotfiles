@@ -7,28 +7,47 @@ sort_dir_first = true
 sort_by = "extension"
 
 [opener]
+# Open with nvim for unix systems
 nvim = [{ run = 'nvim "$@"', block = true, for = "unix" }]
+# Open with the default system editor for all platforms
+edit = [
+    { run = '$EDITOR "$@"', block = true, for = "unix" },
+    { run = "%EDITOR% %*", block = true, for = "windows" },
+]
+# Open with xdg-open (unix) or default system open (windows)
+open = [{ run = 'xdg-open "$@"', desc = "Open" }]
+# Reveal file in the file manager
+reveal = [
+    { run = 'xdg-open "$(dirname "$@")"', desc = "Reveal in file manager" },
+]
 
 [open]
-prepend_rules = [
-    # Config files
-    { name = "*.conf", use = ["edit", "nvim"] },
-    { name = "*.zsh", use = ["edit", "nvim"] },
-    { name = "*.yaml", use = ["edit", "nvim"] },
-    { name = "*.toml", use = ["edit", "nvim"] },
-]
 
-append_rules = [
-    # Folder
+# Append rules for specific file types
+prepend_rules = [
+    # Folder (open/edit with multiple options)
     { name = "*/", use = ["edit", "nvim", "open", "reveal"] },
-    # Text
+    # Text files
     { mime = "text/*", use = ["edit", "nvim", "reveal"] },
-    # JSON
+    # JSON files (application/json or ndjson)
     { mime = "application/{json,ndjson}", use = ["edit", "nvim", "reveal"] },
-    { mime = "*/javascript", use = ["edit", "nvim", "reveal"] },
-    # Empty file
+    # JavaScript files (by MIME type and extension)
+    { mime = "application/javascript", use = ["edit", "nvim", "reveal"] },
+    { name = "*.js", use = ["edit", "nvim", "reveal"] },
+    { name = "*.jsx", use = ["edit", "nvim", "reveal"] },
+    { name = "*.ts", use = ["edit", "nvim", "reveal"] },
+    { name = "*.tsx", use = ["edit", "nvim", "reveal"] },
+    # Empty files
     { mime = "inode/empty", use = ["edit", "nvim", "reveal"] },
-    # Fallback
-    { name = ".*", use = ["edit", "nvim"] },
+    # Fallback (catch-all for other file types)
     { name = "*", use = ["edit", "nvim", "open", "reveal"] },
 ]
+
+# Prepend rules for specific file types
+# prepend_rules = [
+#     # Config files
+#     { name = "*.conf", use = ["edit", "nvim"] },
+#     { name = "*.zsh", use = ["edit", "nvim"] },
+#     { name = "*.yaml", use = ["edit", "nvim"] },
+#     { name = "*.toml", use = ["edit", "nvim"] },
+# ]
